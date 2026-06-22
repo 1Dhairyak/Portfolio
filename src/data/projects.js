@@ -16,7 +16,7 @@
     description: "Geography quiz app with 10 random questions per session, live scoring, and full-stack deployment.",
     tags: ["React", "Spring Boot", "PostgreSQL"],
     repo: "https://github.com/1Dhairyak/geoscale-frontend",
-    demo: null,
+    demo: "https://geoscale-frontend.vercel.app/",
     image: "/projects/proj-geoscale.png",
     color: "#0f2027",
     icon: "🌍",
