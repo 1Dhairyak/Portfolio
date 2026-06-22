@@ -11,17 +11,6 @@
     icon: "🚀",
   },
   {
-    id: 2,
-    title: "Higher or Lower",
-    description: "Web game where players guess which item has higher monthly search volume. Rate-limited, animated, WebSocket-ready.",
-    tags: ["React", "Spring Boot", "PostgreSQL", "Framer Motion"],
-    repo: "https://github.com/1Dhairyak/higher-lower",
-    demo: "https://higher-lower-game.vercel.app",
-    image: null,
-    color: "#0d1b2a",
-    icon: "📊",
-  },
-  {
     id: 3,
     title: "GeoScale",
     description: "Geography quiz app with 10 random questions per session, live scoring, and full-stack deployment.",
