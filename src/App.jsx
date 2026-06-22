@@ -9,12 +9,10 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import ScrollTopBtn from "./components/ScrollTopBtn";
 import Divider from "./components/Divider";
-import GeoScalePopup from "./components/GeoScalePopup";
 
 export default function App() {
   return (
     <div className="bg-[#0a0a0a] min-h-screen text-white overflow-x-hidden">
-      <GeoScalePopup />
       <FloatingBg />
       <Navbar />
       <Hero />
