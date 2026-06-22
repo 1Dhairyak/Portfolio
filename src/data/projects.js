@@ -28,7 +28,7 @@
     tags: ["React", "Spring Boot", "PostgreSQL"],
     repo: "https://github.com/1Dhairyak/geoscale-frontend",
     demo: null,
-    image: null,
+    image: "/projects/proj-geoscale.png",
     color: "#0f2027",
     icon: "🌍",
   },
