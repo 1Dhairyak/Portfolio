@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaEnvelope, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
+import { FaEnvelope, FaPhoneAlt, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 
 const socials = [
   {
@@ -10,6 +10,14 @@ const socials = [
     color: "#EA4335",
     border: "#EA4335",
     description: "Drop me a mail",
+  },
+  {
+    icon: <FaPhoneAlt size={24} />,
+    href: "tel:+917061915688",
+    label: "Phone",
+    color: "#34A853",
+    border: "#34A853",
+    description: "+91 7061915688",
   },
   {
     icon: <FaInstagram size={26} />,
@@ -37,7 +45,7 @@ const socials = [
   },
 ];
 
-const platforms = ["Gmail", "LinkedIn", "GitHub", "Instagram", "Telegram"];
+const platforms = ["Gmail", "Phone", "LinkedIn", "GitHub", "Instagram", "Telegram"];
 
 export default function Contact() {
   const [platformIdx, setPlatformIdx] = useState(0);
@@ -134,11 +142,11 @@ export default function Contact() {
                 <AnimatePresence>
                   {hoveredSocial === label && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.9 }}
+                      initial={{ opacity: 0, x: "-50%", y: 8, scale: 0.9 }}
+                      animate={{ opacity: 1, x: "-50%", y: 0, scale: 1 }}
+                      exit={{ opacity: 0, x: "-50%", y: 8, scale: 0.9 }}
                       transition={{ duration: 0.18 }}
-                      className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-center pointer-events-none z-30"
+                      className="absolute -bottom-16 left-1/2 text-center pointer-events-none z-30"
                     >
                       <span
                         className="block text-xs font-bold font-mono whitespace-nowrap px-3 py-1.5 rounded-lg border"
