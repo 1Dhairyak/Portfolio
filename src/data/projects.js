@@ -76,15 +76,4 @@
     color: "#0a0a1a",
     icon: "🧘",
   },
-  {
-    id: 8,
-    title: "To-dō App",
-    description: "Feature-rich vanilla to-do app with category tags, SVG progress ring, Web Audio, and dark mode.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    repo: "https://github.com/1Dhairyak/To-doo",
-    demo: "https://to-doo-self.vercel.app",
-    image: "/projects/proj-todo.png",
-    color: "#1a0a0a",
-    icon: "✅",
-  },
 ];
