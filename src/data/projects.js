@@ -28,7 +28,12 @@
     tags: ["React", "Vite", "Tailwind"],
     repo: "https://github.com/1Dhairyak/search-wars",
     demo: "https://search-wars.vercel.app",
-    image: "/projects/proj-searchwars.png",
+    video: "https://www.youtube.com/watch?v=_lub_iWlDgQ",
+    images: [
+      "/projects/proj-sw-home.png",
+      "/projects/proj-sw-game.png",
+      "/projects/proj-sw-leaderboard.png",
+    ],
     color: "#1a0a2e",
     icon: "⚔️",
   },
