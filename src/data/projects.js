@@ -24,7 +24,7 @@
   {
     id: 4,
     title: "SearchWars",
-    description: "Compare search volumes between topics in a slick battle-style UI.",
+    description: "Higher-or-lower game on real Wikipedia page views across 8 categories, with 1v1 duels and a global leaderboard.",
     tags: ["React", "Vite", "Tailwind"],
     repo: "https://github.com/1Dhairyak/search-wars",
     demo: "https://search-wars.vercel.app",
