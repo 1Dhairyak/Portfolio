@@ -4,6 +4,7 @@ import { projects } from "../data/projects";
 import { FaGithub, FaExternalLinkAlt, FaYoutube } from "react-icons/fa";
 
 const SLIDE_INTERVAL = 4000;
+const arrowCls = "w-10 h-10 rounded-full border border-white/20 text-white/60 hover:border-accent hover:text-accent flex items-center justify-center transition-colors duration-200";
 
 export default function Projects() {
   const [current, setCurrent] = useState(0);
@@ -35,7 +36,7 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" className="relative z-10 py-24 px-8">
+    <section id="projects" className="cv-auto relative z-10 py-24 px-8">
       <div className="max-w-6xl mx-auto">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center text-4xl font-bold text-white mb-4 font-sans tracking-wide">
           Projects
@@ -49,7 +50,16 @@ export default function Projects() {
           </div>
           <div className="w-full max-w-md flex-shrink-0 overflow-hidden" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
             <AnimatePresence mode="wait" custom={direction}>
-              <motion.div key={current} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.28, ease: "easeInOut" }} style={{ willChange: "transform, opacity" }}>
+              <motion.div
+                key={current} custom={direction} variants={variants} initial="enter" animate="center" exit="exit"
+                transition={{ duration: 0.28, ease: "easeInOut" }} style={{ willChange: "transform, opacity", touchAction: "pan-y" }}
+                // swipe left/right to change project (phones); vertical scrolling stays native
+                drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={0.25}
+                onDragEnd={(_, { offset, velocity }) => {
+                  if (offset.x < -60 || velocity.x < -500) next();
+                  else if (offset.x > 60 || velocity.x > 500) prev();
+                }}
+              >
                 <ProjectCard project={projects[current]} main playing={hovered} />
               </motion.div>
             </AnimatePresence>
@@ -57,13 +67,16 @@ export default function Projects() {
           <div className="hidden lg:block w-64 flex-shrink-0 cursor-pointer opacity-40 scale-90 transition-opacity duration-300 hover:opacity-60" onClick={next}>
             <ProjectCard project={projects[getIndex(1)]} mini />
           </div>
-          <button onClick={prev} className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 text-white/60 hover:border-accent hover:text-accent flex items-center justify-center transition-colors duration-200 lg:hidden">←</button>
-          <button onClick={next} className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 text-white/60 hover:border-accent hover:text-accent flex items-center justify-center transition-colors duration-200 lg:hidden">→</button>
         </div>
-        <div className="flex justify-center gap-2 mt-10">
-          {projects.map((_, i) => (
-            <button key={i} onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }} className={`h-2 rounded-full transition-all duration-300 ${i === current ? "bg-accent-fill w-6" : "bg-white/25 w-2 hover:bg-white/50"}`} />
-          ))}
+        {/* below lg the side cards are hidden, so the arrows sit beside the dots instead of over the card */}
+        <div className="flex items-center justify-center gap-4 mt-10">
+          <button onClick={prev} aria-label="Previous project" className={`${arrowCls} lg:hidden`}>←</button>
+          <div className="flex gap-2">
+            {projects.map((_, i) => (
+              <button key={i} aria-label={`Show project ${i + 1}`} onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }} className={`h-2 rounded-full transition-all duration-300 ${i === current ? "bg-accent-fill w-6" : "bg-white/25 w-2 hover:bg-white/50"}`} />
+            ))}
+          </div>
+          <button onClick={next} aria-label="Next project" className={`${arrowCls} lg:hidden`}>→</button>
         </div>
       </div>
     </section>

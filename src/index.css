@@ -23,12 +23,12 @@
   --surface-6: 42 42 42;   /* #2a2a2a */
 }
 
-/* Light = the BallKnowledge palette (lagoon / cloud / ink / teal / pink) */
+/* Light = the BallKnowledge palette (lagoon / cloud / ink / pink) with a raspberry accent for punch */
 :root[data-theme="light"] {
   color-scheme: light;
   --fg: 12 45 61;          /* ink #0c2d3d */
   --fg-inverse: 255 255 255;
-  --accent: 8 96 111;      /* #08606f — BK teal #1497b5 deepened to stay readable on lagoon */
+  --accent: 160 24 96;     /* raspberry #a01860 — complements the lagoon, 4.9:1 on it */
   --accent-fill: 242 181 212; /* pink #f2b5d4 */
   --on-accent: 12 45 61;   /* ink on pink */
   --card: 252 255 255 / 0.92;
@@ -40,6 +40,60 @@
   --surface-4: 226 241 245;
   --surface-5: 252 255 255;
   --surface-6: 226 241 245;
+}
+
+/* Off-screen sections skip style/layout/paint until scrolled near — smoother scrolling and a much
+   cheaper theme switch on phones. Never put this on an ancestor of position:fixed UI (it would
+   become their containing block). `auto` remembers each section's real height once rendered. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* Light-only highlights (no-ops in dark): a pink highlighter swipe under the name, a sunny pill for the phone */
+/* The marker is its own layer behind the text, animated with transform only (compositor, no repaint).
+   Animating background-size instead repainted the hero text every frame: ~0.5s frames on phones. */
+:root[data-theme="light"] .hl-name {
+  position: relative;
+  z-index: 0; /* own stacking context, so the marker sits behind the text */
+}
+:root[data-theme="light"] .hl-name::after {
+  content: "";
+  position: absolute;
+  left: -0.1em;
+  right: -0.1em;
+  top: 58%;
+  bottom: 4%;
+  z-index: -1;
+  border-radius: 0.1em;
+  background: rgb(var(--accent-fill));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+/* swipes in once the intro is gone (or right after the fire reveals the light theme) */
+:root[data-theme="light"].intro-done .hl-name::after {
+  animation: hl-swipe 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+}
+/* hold during a theme burn so nothing changes under the live snapshot; paused, so a finished swipe stays */
+:root[data-theme].theme-switching.intro-done .hl-name::after {
+  animation-play-state: paused; /* out-ranks the rule above, whose `animation` shorthand resets play-state */
+}
+@keyframes hl-swipe {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+:root[data-theme="light"] .hl-phone {
+  display: inline-block;
+  background: #ffd23f;
+  color: #0c2d3d;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  box-shadow: 0 8px 22px rgb(12 45 61 / 0.18);
+  transition: background-color 0.2s, transform 0.2s;
+}
+:root[data-theme="light"] .hl-phone:hover {
+  background: rgb(var(--accent-fill));
+  transform: translateY(-2px);
 }
 
 /* Pastel syntax colors vanish on white; deepen them in light mode */

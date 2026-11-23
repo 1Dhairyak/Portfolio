@@ -40,8 +40,13 @@ export default function Intro() {
     setOpen(false);
   };
 
+  const onExitComplete = () => {
+    document.documentElement.classList.add("intro-done"); // starts entrance-only effects (e.g. the name highlight)
+    switchTheme(choice, innerWidth / 2, innerHeight / 2);
+  };
+
   return (
-    <AnimatePresence onExitComplete={() => switchTheme(choice, innerWidth / 2, innerHeight / 2)}>
+    <AnimatePresence onExitComplete={onExitComplete}>
       {open && (
         <motion.div
           key="intro"
