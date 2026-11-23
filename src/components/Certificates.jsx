@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { certificates } from "../data/certificates";
 
@@ -30,6 +30,21 @@ export default function Certificates() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selected, setSelected] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
+
+  // phone swipe row: which card is centered, for the "3 / 22" counter
+  const rowRef = useRef(null);
+  const [slide, setSlide] = useState(0);
+  const onRowScroll = (e) => {
+    const row = e.currentTarget;
+    const card = row.firstElementChild;
+    if (card) setSlide(Math.round(row.scrollLeft / (card.offsetWidth + 16)));
+  };
+  // a new filter starts the row from the first card
+  const pickCategory = (cat) => {
+    setActiveCategory(cat);
+    setSlide(0);
+    rowRef.current?.scrollTo({ left: 0 });
+  };
 
   const filtered =
     activeCategory === "All"
@@ -144,7 +159,7 @@ export default function Certificates() {
               return (
                 <button
                   key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => pickCategory(cat)}
                   className="px-4 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 border"
                   style={
                     isActive
@@ -164,7 +179,12 @@ export default function Certificates() {
         </motion.div>
 
         {/* ── Cards grid ── */}
-        <div className="cv-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* phones: one swipeable row that snaps card to card; sm and up: the grid */}
+        <div
+          ref={rowRef}
+          onScroll={onRowScroll}
+          className="cv-auto no-scrollbar flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory -mx-6 px-6 scroll-px-6 sm:mx-0 sm:px-0 pb-2"
+        >
           <AnimatePresence mode="popLayout">
             {filtered.map((cert, i) => (
               <motion.div
@@ -174,7 +194,7 @@ export default function Certificates() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, y: -10 }}
                 transition={{ delay: i * 0.06, duration: 0.35, type: "spring", stiffness: 200 }}
-                className="bg-surface-1 border rounded-xl overflow-hidden cursor-pointer group transition-all duration-300"
+                className="shrink-0 w-[82%] snap-center sm:w-auto bg-surface-1 border rounded-xl overflow-hidden cursor-pointer group transition-[border-color,box-shadow] duration-300"
                 style={{
                   borderColor: hoveredCard === cert.name ? cert.color + "55" : "rgb(var(--fg) / 0.08)",
                   boxShadow: hoveredCard === cert.name ? `0 0 24px ${cert.color}18` : "none",
@@ -267,6 +287,11 @@ export default function Certificates() {
             ))}
           </AnimatePresence>
         </div>
+        {filtered.length > 1 && (
+          <p className="sm:hidden mt-4 text-center font-mono text-xs text-white/40">
+            ← swipe → <span className="text-accent">{slide + 1}</span> / {filtered.length}
+          </p>
+        )}
 
         {/* ── Empty state ── */}
         {filtered.length === 0 && (

@@ -50,6 +50,10 @@
   contain-intrinsic-size: auto 900px;
 }
 
+/* swipe rows scroll by touch; no scrollbar strip under them */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 /* Light-only highlights (no-ops in dark): a pink highlighter swipe under the name, a sunny pill for the phone */
 /* The marker is its own layer behind the text, animated with transform only (compositor, no repaint).
    Animating background-size instead repainted the hero text every frame: ~0.5s frames on phones. */
