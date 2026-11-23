@@ -37,7 +37,7 @@ export default function Navbar() {
       </span>
 
       <div className="flex items-center gap-8">
-      <ul className="flex gap-8">
+      <ul className="hidden md:flex gap-8">
         {links.map((link) => (
           <li key={link}>
             <button
