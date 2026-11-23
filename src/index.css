@@ -10,6 +10,10 @@
   --fg: 255 255 255;
   --fg-inverse: 0 0 0;
   --accent: 0 255 157;
+  --accent-fill: 0 255 157;
+  --on-accent: 0 0 0;
+  --card: 255 255 255 / 0.02;
+  --card-strong: 255 255 255 / 0.04;
   --surface: 10 10 10;     /* #0a0a0a page */
   --surface-1: 13 13 13;   /* #0d0d0d panels */
   --surface-2: 17 17 17;   /* #111 */
@@ -19,18 +23,23 @@
   --surface-6: 42 42 42;   /* #2a2a2a */
 }
 
+/* Light = the BallKnowledge palette (lagoon / cloud / ink / teal / pink) */
 :root[data-theme="light"] {
   color-scheme: light;
-  --fg: 12 12 12;
+  --fg: 12 45 61;          /* ink #0c2d3d */
   --fg-inverse: 255 255 255;
-  --accent: 0 128 77;      /* #00804d — #00ff9d is unreadable on white */
-  --surface: 247 247 244;
-  --surface-1: 255 255 255;
-  --surface-2: 252 252 250;
-  --surface-3: 243 243 239;
-  --surface-4: 240 240 236;
-  --surface-5: 255 255 255;
-  --surface-6: 234 234 229;
+  --accent: 8 96 111;      /* #08606f — BK teal #1497b5 deepened to stay readable on lagoon */
+  --accent-fill: 242 181 212; /* pink #f2b5d4 */
+  --on-accent: 12 45 61;   /* ink on pink */
+  --card: 252 255 255 / 0.92;
+  --card-strong: 252 255 255 / 1;
+  --surface: 123 223 242;  /* lagoon #7bdff2 */
+  --surface-1: 252 255 255; /* cloud #fcffff */
+  --surface-2: 241 250 252;
+  --surface-3: 226 241 245;
+  --surface-4: 226 241 245;
+  --surface-5: 252 255 255;
+  --surface-6: 226 241 245;
 }
 
 /* Pastel syntax colors vanish on white; deepen them in light mode */

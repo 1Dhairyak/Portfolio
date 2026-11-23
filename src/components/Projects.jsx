@@ -62,7 +62,7 @@ export default function Projects() {
         </div>
         <div className="flex justify-center gap-2 mt-10">
           {projects.map((_, i) => (
-            <button key={i} onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }} className={`h-2 rounded-full transition-all duration-300 ${i === current ? "bg-accent w-6" : "bg-white/25 w-2 hover:bg-white/50"}`} />
+            <button key={i} onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }} className={`h-2 rounded-full transition-all duration-300 ${i === current ? "bg-accent-fill w-6" : "bg-white/25 w-2 hover:bg-white/50"}`} />
           ))}
         </div>
       </div>
@@ -82,7 +82,7 @@ function ProjectCard({ project, main, playing }) {
   }, [playing, images.length]);
 
   return (
-    <div className={`rounded-2xl border overflow-hidden ${main ? "border-accent/30 bg-white/[0.04] shadow-xl shadow-accent/5" : "border-white/10 bg-white/[0.02]"}`}>
+    <div className={`rounded-2xl border overflow-hidden ${main ? "border-accent/30 bg-card-strong shadow-xl shadow-accent/5" : "border-white/10 bg-card"}`}>
       {main && playing && videoId ? (
         <div className="w-full overflow-hidden bg-black" style={{ height: "200px" }}>
           <iframe
@@ -119,7 +119,7 @@ function ProjectCard({ project, main, playing }) {
               </a>
             )}
             {project.demo && (
-              <a href={project.demo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-accent text-black px-4 py-2 rounded-full text-sm font-mono font-bold hover:bg-accent/80 transition-colors duration-200">
+              <a href={project.demo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-accent-fill text-on-accent px-4 py-2 rounded-full text-sm font-mono font-bold hover:bg-accent-fill/80 transition-colors duration-200">
                 <FaExternalLinkAlt size={12} />Live Demo
               </a>
             )}

@@ -32,7 +32,7 @@ export default function Strengths() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
               whileHover={{ y: -6 }}
-              className="group flex flex-col items-center text-center p-8 rounded-xl border border-white/5 bg-white/[0.02] hover:border-accent/30 hover:bg-white/[0.04] transition-all duration-400 cursor-default"
+              className="group flex flex-col items-center text-center p-8 rounded-xl border border-white/5 bg-card hover:border-accent/30 hover:bg-card-strong transition-all duration-400 cursor-default"
             >
               <span className="text-4xl mb-5 group-hover:scale-110 transition-transform duration-300">
                 {s.icon}

@@ -52,7 +52,7 @@ export default function Certificates() {
           <div className="flex items-center gap-3 px-5 py-3 bg-surface-4 border-b border-white/5">
             <TerminalDots />
             <span className="ml-2 text-xs text-white/30 font-mono">~/portfolio/certificates.js</span>
-            <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20">
+            <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded bg-accent-fill/10 text-accent border border-accent/20">
               ● LIVE
             </span>
           </div>

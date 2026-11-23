@@ -10,6 +10,11 @@ export default {
         white: v("fg"),
         black: v("fg-inverse"),
         accent: v("accent"),
+        "accent-fill": v("accent-fill"), // filled buttons / active markers
+        "on-accent": v("on-accent"), // text on accent-fill
+        // cards carry their own alpha: faint white wash in dark, solid BK cloud cards in light
+        card: "rgb(var(--card))",
+        "card-strong": "rgb(var(--card-strong))",
         surface: {
           DEFAULT: v("surface"),
           1: v("surface-1"),

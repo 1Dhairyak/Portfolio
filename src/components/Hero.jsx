@@ -35,12 +35,12 @@ export default function Hero() {
         </motion.div>
         <motion.div initial={{ x: 60, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.7, delay: 0.4 }} className="text-center md:text-left">
           <p className="font-mono text-accent text-sm mb-3 tracking-widest uppercase">Console.Log("Hello World")</p>
-          <h1 className="font-sans font-extrabold text-5xl md:text-6xl text-white mb-3 leading-tight">I Am <span className="text-accent">Dhairya Kumar</span></h1>
+          <h1 className="font-sans font-extrabold text-5xl md:text-6xl text-white mb-3 leading-tight">I Am <span className="text-accent">Dhairya</span></h1>
           <p className="text-white/60 text-lg font-sans mb-8">Cloud and Backend Engineer / Full Stack Developer</p>
           <div className="flex gap-4 justify-center md:justify-start mb-8">
             {socials.map(({ icon, href, label }) => (
               <div key={label} className="relative group">
-                <a href={href} target="_blank" rel="noopener noreferrer" style={{ willChange: "transform" }} className="w-12 h-12 rounded-full border-2 border-accent text-accent flex items-center justify-center hover:bg-accent hover:text-black transition-colors duration-200 hover:scale-110 hover:shadow-[0_0_20px_rgba(0,255,157,0.5)]">
+                <a href={href} target="_blank" rel="noopener noreferrer" style={{ willChange: "transform" }} className="w-12 h-12 rounded-full border-2 border-accent text-accent flex items-center justify-center hover:bg-accent-fill hover:text-on-accent transition-colors duration-200 hover:scale-110 hover:shadow-[0_0_20px_rgba(0,255,157,0.5)]">
                   {icon}
                 </a>
                 <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-mono text-accent/80 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">{label}</span>
@@ -48,10 +48,10 @@ export default function Hero() {
             ))}
           </div>
           <div className="flex gap-4 flex-wrap justify-center md:justify-start mb-10">
-            <a href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }} className="inline-flex items-center gap-2 bg-accent text-black font-bold px-7 py-3 rounded-full hover:bg-accent/80 transition-colors duration-200 font-mono text-sm">View Projects →</a>
-            <a href="/Dhairya_Kumar_CV.pdf" download className="inline-flex items-center gap-2 border-2 border-accent text-accent font-bold px-7 py-3 rounded-full hover:bg-accent hover:text-black transition-colors duration-200 font-mono text-sm"><FaDownload size={14} />Download CV</a>
+            <a href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }} className="inline-flex items-center gap-2 bg-accent-fill text-on-accent font-bold px-7 py-3 rounded-full hover:bg-accent-fill/80 transition-colors duration-200 font-mono text-sm">View Projects →</a>
+            <a href="/Dhairya_Kumar_CV.pdf" download className="inline-flex items-center gap-2 border-2 border-accent text-accent font-bold px-7 py-3 rounded-full hover:bg-accent-fill hover:text-on-accent transition-colors duration-200 font-mono text-sm"><FaDownload size={14} />Download CV</a>
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.8 }} className="grid grid-cols-4 gap-4 border border-white/10 rounded-xl p-4 bg-white/[0.02] backdrop-blur-sm">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.8 }} className="grid grid-cols-4 gap-4 border border-white/10 rounded-xl p-4 bg-card backdrop-blur-sm">
             {stats.map(({ value, label }) => (
               <div key={label} className="text-center">
                 <p className="text-accent font-bold text-2xl font-mono">{value}</p>

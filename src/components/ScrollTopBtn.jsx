@@ -18,7 +18,7 @@ export default function ScrollTopBtn() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-8 right-8 z-50 w-11 h-11 rounded-full bg-white text-black flex items-center justify-center shadow-lg hover:bg-accent transition-colors duration-300"
+          className="fixed bottom-8 right-8 z-50 w-11 h-11 rounded-full bg-white text-black flex items-center justify-center shadow-lg hover:bg-accent-fill transition-colors duration-300"
         >
           ↑
         </motion.button>

@@ -18,7 +18,7 @@ export default function AboutMe() {
             <p className="text-white/60 leading-relaxed font-sans">
               I have deployed 8+ full-stack projects to Vercel and Render, solved real engineering problems from rate limiters to Testcontainers integration tests. I care about clean code, correct architecture, and not shipping bugs to production.
             </p>
-            <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }} className="inline-flex items-center gap-2 mt-8 border border-accent text-accent px-6 py-2.5 rounded-full font-mono text-sm hover:bg-accent hover:text-black transition-colors duration-200">
+            <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }} className="inline-flex items-center gap-2 mt-8 border border-accent text-accent px-6 py-2.5 rounded-full font-mono text-sm hover:bg-accent-fill hover:text-on-accent transition-colors duration-200">
               Read More →
             </a>
           </motion.div>
@@ -31,7 +31,7 @@ export default function AboutMe() {
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {items.map((skill) => (
-                    <motion.span key={skill.name} whileHover={{ scale: 1.45 }} transition={{ type: "spring", stiffness: 300, damping: 18 }} style={{ willChange: "transform" }} className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-white/70 text-xs px-3 py-1.5 rounded-full font-mono hover:border-accent hover:text-accent hover:bg-accent/10 hover:shadow-[0_0_14px_rgba(0,255,157,0.35)] transition-colors duration-150 cursor-default origin-center">
+                    <motion.span key={skill.name} whileHover={{ scale: 1.45 }} transition={{ type: "spring", stiffness: 300, damping: 18 }} style={{ willChange: "transform" }} className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-white/70 text-xs px-3 py-1.5 rounded-full font-mono hover:border-accent hover:text-accent hover:bg-accent-fill/10 hover:shadow-[0_0_14px_rgba(0,255,157,0.35)] transition-colors duration-150 cursor-default origin-center">
                       <span>{skill.icon}</span>{skill.name}
                     </motion.span>
                   ))}
