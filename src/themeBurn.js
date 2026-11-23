@@ -235,7 +235,23 @@ export function warmUpBurn() {
   ctx.getImageData(0, 0, 1, 1); // force the GPU to actually execute the recorded draws
 }
 
-export function burnThemeSwitch(apply, x, y) {
+function applyTheme(next) {
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("theme", next); } catch { /* storage blocked */ }
+}
+
+// The one entry point for changing theme: burns from (x, y) where supported, else switches instantly.
+// UI that shows the current theme should watch <html data-theme> (see ThemeToggle).
+export function switchTheme(next, x, y) {
+  if (document.documentElement.dataset.theme === next) return;
+  if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    applyTheme(next);
+    return;
+  }
+  burnThemeSwitch(() => applyTheme(next), x, y);
+}
+
+function burnThemeSwitch(apply, x, y) {
   if (burning) return; // let the fire finish
   burning = true;
 

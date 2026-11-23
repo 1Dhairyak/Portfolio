@@ -9,10 +9,12 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import ScrollTopBtn from "./components/ScrollTopBtn";
 import Divider from "./components/Divider";
+import Intro from "./components/Intro";
 
 export default function App() {
   return (
     <div className="bg-surface min-h-screen text-white overflow-x-hidden">
+      <Intro />
       <FloatingBg />
       <Navbar />
       <Hero />

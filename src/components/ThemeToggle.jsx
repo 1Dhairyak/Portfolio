@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { flushSync } from "react-dom";
 import { motion } from "framer-motion";
-import { burnThemeSwitch, warmUpBurn } from "../themeBurn";
+import { switchTheme, warmUpBurn } from "../themeBurn";
 
 const spring = { type: "spring", stiffness: 220, damping: 20 };
 
@@ -15,29 +14,21 @@ export default function ThemeToggle() {
   const [theme, setTheme] = useState(() => document.documentElement.dataset.theme || "dark");
   const dark = theme === "dark";
 
-  // Pre-compile the fire while the page is idle so the first click is as smooth as the rest
   useEffect(() => {
+    // Follow the theme wherever it's changed from (this button or the intro screen)
+    const root = document.documentElement;
+    const observer = new MutationObserver(() => setTheme(root.dataset.theme));
+    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    // Pre-compile the fire while the page is idle so the first switch is as smooth as the rest
     const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1500));
     idle(warmUpBurn, { timeout: 4000 });
+    return () => observer.disconnect();
   }, []);
 
+  // The old page burns away from the button, revealing the new theme.
   const toggle = (e) => {
-    const next = dark ? "light" : "dark";
-    const root = document.documentElement;
-    const apply = () => {
-      root.dataset.theme = next;
-      flushSync(() => setTheme(next));
-      try { localStorage.setItem("theme", next); } catch { /* storage blocked */ }
-    };
-
-    if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      apply();
-      return;
-    }
-
-    // The old page burns away from the button, revealing the new theme.
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    burnThemeSwitch(apply, left + width / 2, top + height / 2);
+    switchTheme(dark ? "light" : "dark", left + width / 2, top + height / 2);
   };
 
   return (
