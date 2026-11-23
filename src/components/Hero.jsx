@@ -5,7 +5,7 @@ import profileImg from "../assets/profile.jpg";
 const stats = [
   { value: "8+", label: "Projects Shipped" },
   { value: "4+", label: "Years Coding" },
-  { value: "23+", label: "Certificates" },
+  { value: "22+", label: "Certificates" },
   { value: "2", label: "Cloud Platforms" },
 ];
 
