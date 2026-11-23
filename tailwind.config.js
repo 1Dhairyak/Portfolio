@@ -1,12 +1,24 @@
+// Colors resolve to CSS variables (see index.css) so dark/light is one attribute flip.
+const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        accent: "#00ff9d",
-        dark: "#0a0a0a",
-        card: "#111111",
+        white: v("fg"),
+        black: v("fg-inverse"),
+        accent: v("accent"),
+        surface: {
+          DEFAULT: v("surface"),
+          1: v("surface-1"),
+          2: v("surface-2"),
+          3: v("surface-3"),
+          4: v("surface-4"),
+          5: v("surface-5"),
+          6: v("surface-6"),
+        },
       },
       fontFamily: {
         mono: ["'JetBrains Mono'", "monospace"],

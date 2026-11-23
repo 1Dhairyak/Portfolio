@@ -12,7 +12,7 @@ import Divider from "./components/Divider";
 
 export default function App() {
   return (
-    <div className="bg-[#0a0a0a] min-h-screen text-white overflow-x-hidden">
+    <div className="bg-surface min-h-screen text-white overflow-x-hidden">
       <FloatingBg />
       <Navbar />
       <Hero />

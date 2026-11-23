@@ -39,11 +39,13 @@ const socials = [
     icon: <FaGithub size={26} />,
     href: "https://github.com/1Dhairyak",
     label: "GitHub",
-    color: "#ffffff",
-    border: "#ffffff",
+    color: "rgb(var(--fg))",
+    border: "rgb(var(--fg))",
     description: "/1Dhairyak",
   },
 ];
+
+const mix = (color, pct) => `color-mix(in srgb, ${color} ${pct}%, transparent)`;
 
 const platforms = ["Gmail", "Phone", "LinkedIn", "GitHub", "Instagram", "Telegram"];
 
@@ -118,19 +120,19 @@ export default function Contact() {
                   rel="noopener noreferrer"
                   className="w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-300"
                   style={{
-                    border: `2px solid ${border}44`,
+                    border: `2px solid ${mix(border, 27)}`,
                     color: color,
-                    background: color + "11",
+                    background: mix(color, 7),
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.border = `2px solid ${border}`;
-                    e.currentTarget.style.background = color + "22";
+                    e.currentTarget.style.background = mix(color, 13);
                     e.currentTarget.style.transform = "scale(1.18) translateY(-4px)";
-                    e.currentTarget.style.boxShadow = `0 8px 30px ${color}44`;
+                    e.currentTarget.style.boxShadow = `0 8px 30px ${mix(color, 27)}`;
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.border = `2px solid ${border}44`;
-                    e.currentTarget.style.background = color + "11";
+                    e.currentTarget.style.border = `2px solid ${mix(border, 27)}`;
+                    e.currentTarget.style.background = mix(color, 7);
                     e.currentTarget.style.transform = "scale(1) translateY(0)";
                     e.currentTarget.style.boxShadow = "none";
                   }}
@@ -152,8 +154,8 @@ export default function Contact() {
                         className="block text-xs font-bold font-mono whitespace-nowrap px-3 py-1.5 rounded-lg border"
                         style={{
                           color: color,
-                          borderColor: color + "66",
-                          background: color + "18",
+                          borderColor: mix(color, 40),
+                          background: mix(color, 9),
                         }}
                       >
                         {label}
@@ -174,7 +176,7 @@ export default function Contact() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
-            className="mt-4 bg-[#111] border border-white/10 rounded-xl px-6 py-4 font-mono text-sm text-center max-w-md"
+            className="mt-4 bg-surface-2 border border-white/10 rounded-xl px-6 py-4 font-mono text-sm text-center max-w-md"
           >
             <span className="text-white/30">$ </span>
             <span className="text-accent">status</span>

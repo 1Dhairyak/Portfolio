@@ -5,6 +5,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>kinshu-portfolio</title>
+    <script>
+      // Apply the saved theme before first paint (no flash)
+      try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark"; }
+      catch { document.documentElement.dataset.theme = "dark"; }
+    </script>
   </head>
   <body>
     <div id="root"></div>

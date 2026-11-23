@@ -64,7 +64,19 @@ export default function FloatingBg() {
       return cx >= p.x && cx <= p.x + w && cy >= p.y - p.size && cy <= p.y + 4;
     }
 
+    // Theme colors from CSS vars, re-read only when the theme attribute flips
+    let theme, fg, accent;
+    function syncTheme() {
+      const root = document.documentElement;
+      if (theme === root.dataset.theme) return;
+      theme = root.dataset.theme;
+      const css = getComputedStyle(root);
+      fg = css.getPropertyValue("--fg").trim();
+      accent = css.getPropertyValue("--accent").trim();
+    }
+
     function draw() {
+      syncTheme();
       ctx.clearRect(0, 0, W, H);
 
       // Network dots
@@ -82,7 +94,7 @@ export default function FloatingBg() {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 130) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(255,255,255,${0.04 * (1 - dist / 130)})`;
+            ctx.strokeStyle = `rgb(${fg} / ${0.04 * (1 - dist / 130)})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(dots[i].x, dots[i].y);
             ctx.lineTo(dots[j].x, dots[j].y);
@@ -91,7 +103,7 @@ export default function FloatingBg() {
         }
         ctx.beginPath();
         ctx.arc(dots[i].x, dots[i].y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,255,255,0.15)";
+        ctx.fillStyle = `rgb(${fg} / 0.15)`;
         ctx.fill();
       }
 
@@ -161,12 +173,12 @@ export default function FloatingBg() {
         ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
         const glowing = !p.thrown && Math.sqrt((p.x - mouse.x) ** 2 + (p.y - mouse.y) ** 2) < 120;
         if (glowing || dragging === p) {
-          ctx.shadowColor = "#00ff9d";
+          ctx.shadowColor = `rgb(${accent})`;
           ctx.shadowBlur = dragging === p ? 20 : 10;
         } else {
           ctx.shadowBlur = 0;
         }
-        ctx.fillStyle = `rgba(0,255,157,${p.alpha})`;
+        ctx.fillStyle = `rgb(${accent} / ${p.alpha})`;
         ctx.fillText(p.text, p.x, p.y);
         ctx.shadowBlur = 0;
       });

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 
 const links = ["Home", "About", "Certificates", "Strengths", "Projects", "Contact"];
 
@@ -35,6 +36,7 @@ export default function Navbar() {
         DHAIRYA
       </span>
 
+      <div className="flex items-center gap-8">
       <ul className="flex gap-8">
         {links.map((link) => (
           <li key={link}>
@@ -54,6 +56,8 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
+      <ThemeToggle />
+      </div>
     </motion.nav>
   );
 }

@@ -10,8 +10,10 @@ const categoryColors = {
   "Web Dev": "#00C4B4",
   Algorithms: "#CFB87C",
   Other: "#888888",
-  All: "#00ff9d",
+  All: "rgb(var(--accent))",
 };
+
+const mix = (color, pct) => `color-mix(in srgb, ${color} ${pct}%, transparent)`;
 
 function TerminalDots({ small = false }) {
   const size = small ? "w-2 h-2" : "w-3 h-3";
@@ -44,10 +46,10 @@ export default function Certificates() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden mb-14 shadow-2xl"
+          className="bg-surface-1 border border-white/10 rounded-2xl overflow-hidden mb-14 shadow-2xl"
         >
           {/* Title bar */}
-          <div className="flex items-center gap-3 px-5 py-3 bg-[#1a1a1a] border-b border-white/5">
+          <div className="flex items-center gap-3 px-5 py-3 bg-surface-4 border-b border-white/5">
             <TerminalDots />
             <span className="ml-2 text-xs text-white/30 font-mono">~/portfolio/certificates.js</span>
             <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20">
@@ -128,7 +130,7 @@ export default function Certificates() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.15 }}
-          className="bg-[#0d0d0d] border border-white/10 rounded-xl p-4 mb-12 shadow-lg"
+          className="bg-surface-1 border border-white/10 rounded-xl p-4 mb-12 shadow-lg"
         >
           <div className="flex items-center gap-3 mb-3">
             <TerminalDots small />
@@ -138,7 +140,7 @@ export default function Certificates() {
             <span className="text-accent/60 font-mono text-xs">grep --category=</span>
             {ALL_CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat;
-              const color = categoryColors[cat] || "#00ff9d";
+              const color = categoryColors[cat] || categoryColors.All;
               return (
                 <button
                   key={cat}
@@ -146,8 +148,8 @@ export default function Certificates() {
                   className="px-4 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 border"
                   style={
                     isActive
-                      ? { background: color + "22", color, borderColor: color + "99", fontWeight: 700 }
-                      : { background: "transparent", color: "rgba(255,255,255,0.35)", borderColor: "rgba(255,255,255,0.1)" }
+                      ? { background: mix(color, 13), color, borderColor: mix(color, 60), fontWeight: 700 }
+                      : { background: "transparent", color: "rgb(var(--fg) / 0.35)", borderColor: "rgb(var(--fg) / 0.1)" }
                   }
                 >
                   {isActive && <span className="mr-1">▶</span>}
@@ -172,9 +174,9 @@ export default function Certificates() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, y: -10 }}
                 transition={{ delay: i * 0.06, duration: 0.35, type: "spring", stiffness: 200 }}
-                className="bg-[#0d0d0d] border rounded-xl overflow-hidden cursor-pointer group transition-all duration-300"
+                className="bg-surface-1 border rounded-xl overflow-hidden cursor-pointer group transition-all duration-300"
                 style={{
-                  borderColor: hoveredCard === cert.name ? cert.color + "55" : "rgba(255,255,255,0.08)",
+                  borderColor: hoveredCard === cert.name ? cert.color + "55" : "rgb(var(--fg) / 0.08)",
                   boxShadow: hoveredCard === cert.name ? `0 0 24px ${cert.color}18` : "none",
                 }}
                 onMouseEnter={() => setHoveredCard(cert.name)}
@@ -182,7 +184,7 @@ export default function Certificates() {
                 onClick={() => setSelected(cert)}
               >
                 {/* Terminal title bar */}
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-[#151515] border-b border-white/5">
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-surface-3 border-b border-white/5">
                   <TerminalDots small />
                   <span className="ml-auto text-[10px] font-mono text-white/20 truncate max-w-[120px]">
                     {cert.name.replace(/ /g, "_").toLowerCase().slice(0, 20)}.cert
@@ -218,7 +220,7 @@ export default function Certificates() {
                     </div>
                   )}
                   {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-surface-1 via-transparent to-transparent" />
                   {/* Hover "click to expand" hint */}
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -235,7 +237,7 @@ export default function Certificates() {
                 <div className="p-4">
                   <h3
                     className="font-mono text-sm font-semibold leading-snug mb-2 transition-colors duration-200"
-                    style={{ color: hoveredCard === cert.name ? cert.color : "rgba(255,255,255,0.85)" }}
+                    style={{ color: hoveredCard === cert.name ? cert.color : "rgb(var(--fg) / 0.85)" }}
                   >
                     {cert.name}
                   </h3>
@@ -292,14 +294,14 @@ export default function Certificates() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 30 }}
               transition={{ duration: 0.25, type: "spring", stiffness: 260, damping: 22 }}
-              className="bg-[#0d0d0d] border rounded-2xl overflow-hidden max-w-xl w-full shadow-2xl max-h-[90vh] overflow-y-auto"
+              className="bg-surface-1 border rounded-2xl overflow-hidden max-w-xl w-full shadow-2xl max-h-[90vh] overflow-y-auto"
               style={{ borderColor: selected.color + "44" }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal title bar */}
               <div
                 className="flex items-center gap-3 px-5 py-3.5 border-b sticky top-0 z-10"
-                style={{ background: "#111", borderColor: selected.color + "22" }}
+                style={{ background: "rgb(var(--surface-2))", borderColor: selected.color + "22" }}
               >
                 <TerminalDots />
                 <span className="ml-1 text-xs font-mono text-white/30">certificate_details.json</span>
@@ -347,7 +349,7 @@ export default function Certificates() {
                 </h3>
 
                 {/* JSON-style details */}
-                <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 font-mono text-xs leading-7 mb-5">
+                <div className="bg-surface border border-white/5 rounded-xl p-4 font-mono text-xs leading-7 mb-5">
                   <p><span className="text-white/25">{"{"}</span></p>
                   <p className="pl-5">
                     <span className="text-blue-300">issuer</span>

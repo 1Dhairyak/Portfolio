@@ -4,6 +4,68 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens (RGB channels, consumed by tailwind.config.js) ── */
+:root {
+  color-scheme: dark;
+  --fg: 255 255 255;
+  --fg-inverse: 0 0 0;
+  --accent: 0 255 157;
+  --surface: 10 10 10;     /* #0a0a0a page */
+  --surface-1: 13 13 13;   /* #0d0d0d panels */
+  --surface-2: 17 17 17;   /* #111 */
+  --surface-3: 21 21 21;   /* #151515 */
+  --surface-4: 26 26 26;   /* #1a1a1a */
+  --surface-5: 28 28 28;   /* #1c1c1c */
+  --surface-6: 42 42 42;   /* #2a2a2a */
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --fg: 12 12 12;
+  --fg-inverse: 255 255 255;
+  --accent: 0 128 77;      /* #00804d — #00ff9d is unreadable on white */
+  --surface: 247 247 244;
+  --surface-1: 255 255 255;
+  --surface-2: 252 252 250;
+  --surface-3: 243 243 239;
+  --surface-4: 240 240 236;
+  --surface-5: 255 255 255;
+  --surface-6: 234 234 229;
+}
+
+/* Pastel syntax colors vanish on white; deepen them in light mode */
+:root[data-theme="light"] .text-purple-400 { color: #7c3aed; }
+:root[data-theme="light"] .text-orange-300 { color: #c2410c; }
+:root[data-theme="light"] .text-blue-300 { color: #1d4ed8; }
+:root[data-theme="light"] .text-green-300,
+:root[data-theme="light"] .text-green-400 { color: #15803d; }
+
+/* ── Theme switch: burn reveal (driven from themeBurn.js) ── */
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(theme-fire),
+::view-transition-new(theme-fire) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+/* Fire layer: its own transition layer so it paints above both theme snapshots */
+.theme-fire {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  view-transition-name: theme-fire;
+}
+/* Freeze CSS color transitions while swapping so the revealed side is already final */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -15,8 +77,8 @@ html {
 }
 
 body {
-  background-color: #0a0a0a;
-  color: #ffffff;
+  background-color: rgb(var(--surface));
+  color: rgb(var(--fg));
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
@@ -25,14 +87,14 @@ body {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: rgb(var(--surface));
 }
 ::-webkit-scrollbar-thumb {
-  background: #00ff9d44;
+  background: rgb(var(--accent) / 0.27);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00ff9d;
+  background: rgb(var(--accent));
 }
 
 /* Right side green accent bar like reference */
@@ -43,7 +105,7 @@ body::after {
   top: 20%;
   width: 4px;
   height: 120px;
-  background: #00ff9d;
+  background: rgb(var(--accent));
   border-radius: 2px 0 0 2px;
   z-index: 40;
 }
