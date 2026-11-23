@@ -3,7 +3,7 @@ import { skills } from "../data/skills";
 
 export default function AboutMe() {
   return (
-    <section id="about" className="relative z-10 py-24 px-8">
+    <section id="about" className="cv-auto relative z-10 py-24 px-8">
       <div className="max-w-6xl mx-auto">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center text-4xl font-bold text-white mb-16 font-sans tracking-wide">
           About <span className="text-accent">Me</span>

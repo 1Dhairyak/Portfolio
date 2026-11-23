@@ -56,7 +56,7 @@ export default function Contact() {
   const cyclePlatform = () => setPlatformIdx((i) => (i + 1) % platforms.length);
 
   return (
-    <section id="contact" className="relative z-10 py-24 px-8">
+    <section id="contact" className="cv-auto relative z-10 py-24 px-8">
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}

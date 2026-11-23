@@ -179,7 +179,6 @@ export const certificates = [
     verifyUrl: "https://coursera.org/verify/VVE4ZNUFMTM9",
     image: "/certs/Dhairya roll 48-1.jpg",
   },
-,
   {
     name: "Introduction to Data Engineering",
     issuer: "AWS / DeepLearning.AI",

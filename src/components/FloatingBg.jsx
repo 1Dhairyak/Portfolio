@@ -27,37 +27,58 @@ export default function FloatingBg() {
     let dragging = null;
     let dragOffX = 0, dragOffY = 0;
 
-    const particles = Array.from({ length: 40 }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      text: snippets[Math.floor(Math.random() * snippets.length)],
-      speed: 0.15 + Math.random() * 0.3,
-      baseAlpha: 0.08 + Math.random() * 0.18,
-      alpha: 0.08 + Math.random() * 0.18,
-      size: 10 + Math.random() * 6,
-      drift: (Math.random() - 0.5) * 0.2,
-      // physics
-      vx: 0,
-      vy: 0,
-      // shy effect push
-      pushX: 0,
-      pushY: 0,
-      // throw state
-      thrown: false,
-    }));
+    // Counts scale with screen area so phones keep desktop's density without desktop's cost.
+    const area = W * H;
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, Math.round(v)));
+    const particles = Array.from({ length: clamp(area / 32000, 14, 40) }, () => {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        text: snippets[Math.floor(Math.random() * snippets.length)],
+        speed: 0.15 + Math.random() * 0.3,
+        baseAlpha: 0.08 + Math.random() * 0.18,
+        alpha: 0.08 + Math.random() * 0.18,
+        size: 10 + Math.random() * 6,
+        w: 0, // cached text width, measured lazily
+        drift: (Math.random() - 0.5) * 0.2,
+        // physics
+        vx: 0,
+        vy: 0,
+        // shy effect push
+        pushX: 0,
+        pushY: 0,
+        // throw state
+        thrown: false,
+      };
+    });
 
-    const dots = Array.from({ length: 80 }, () => ({
+    const dots = Array.from({ length: clamp(area / 16000, 24, 80) }, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
       vx: (Math.random() - 0.5) * 0.3,
       vy: (Math.random() - 0.5) * 0.3,
     }));
 
-    // Get text width for hit testing
-    function getTextWidth(p) {
-      ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
-      return ctx.measureText(p.text).width;
+    // One font for every snippet; sizes come from a scale transform. Setting ctx.font re-parses the
+    // string and was the costliest call per frame, so it's only set when the context loses it.
+    const FONT_PX = 12;
+    const FONT = `${FONT_PX}px 'JetBrains Mono', monospace`;
+    let lastFont = "";
+    function ensureFont() {
+      if (lastFont !== FONT) ctx.font = lastFont = FONT;
     }
+
+    // Text width for hit testing / edge bounce, cached until the snippet text changes
+    function getTextWidth(p) {
+      if (!p.w) {
+        ensureFont();
+        p.w = ctx.measureText(p.text).width * (p.size / FONT_PX);
+      }
+      return p.w;
+    }
+
+    const LINE_BUCKETS = 4; // network lines grouped by opacity → 4 strokes per frame instead of hundreds
+    const lineBuckets = Array.from({ length: LINE_BUCKETS }, () => []);
 
     function hitTest(p, cx, cy) {
       const w = getTextWidth(p);
@@ -75,40 +96,59 @@ export default function FloatingBg() {
       accent = css.getPropertyValue("--accent").trim();
     }
 
+    const root = document.documentElement;
+
     function draw() {
+      animId = requestAnimationFrame(draw);
+      // Hold still while the theme burns: this layer sits under the live page snapshot, and redrawing
+      // it would make the browser re-render the whole page every frame of the fire.
+      if (root.classList.contains("theme-switching")) return;
       syncTheme();
       ctx.clearRect(0, 0, W, H);
 
       // Network dots
-      dots.forEach((d) => {
+      for (const d of dots) {
         d.x += d.vx;
         d.y += d.vy;
         if (d.x < 0 || d.x > W) d.vx *= -1;
         if (d.y < 0 || d.y > H) d.vy *= -1;
-      });
-
-      for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-          const dx = dots[i].x - dots[j].x;
-          const dy = dots[i].y - dots[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 130) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgb(${fg} / ${0.04 * (1 - dist / 130)})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(dots[i].x, dots[i].y);
-            ctx.lineTo(dots[j].x, dots[j].y);
-            ctx.stroke();
-          }
-        }
-        ctx.beginPath();
-        ctx.arc(dots[i].x, dots[i].y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgb(${fg} / 0.15)`;
-        ctx.fill();
       }
 
+      for (const b of lineBuckets) b.length = 0;
+      const dotsPath = new Path2D();
+      for (let i = 0; i < dots.length; i++) {
+        const a = dots[i];
+        for (let j = i + 1; j < dots.length; j++) {
+          const dx = a.x - dots[j].x;
+          const dy = a.y - dots[j].y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 16900) {
+            // 130px; nearer pairs land in more opaque buckets
+            const k = Math.min(LINE_BUCKETS - 1, ((1 - Math.sqrt(d2) / 130) * LINE_BUCKETS) | 0);
+            lineBuckets[k].push(i, j);
+          }
+        }
+        dotsPath.moveTo(a.x + 1.5, a.y);
+        dotsPath.arc(a.x, a.y, 1.5, 0, Math.PI * 2);
+      }
+      ctx.lineWidth = 0.5;
+      for (let k = 0; k < LINE_BUCKETS; k++) {
+        const pairs = lineBuckets[k];
+        if (!pairs.length) continue;
+        ctx.beginPath();
+        for (let n = 0; n < pairs.length; n += 2) {
+          ctx.moveTo(dots[pairs[n]].x, dots[pairs[n]].y);
+          ctx.lineTo(dots[pairs[n + 1]].x, dots[pairs[n + 1]].y);
+        }
+        ctx.strokeStyle = `rgb(${fg} / ${(0.04 * (k + 0.5)) / LINE_BUCKETS})`;
+        ctx.stroke();
+      }
+      ctx.fillStyle = `rgb(${fg} / 0.15)`;
+      ctx.fill(dotsPath);
+
       // Floating snippets
-      particles.forEach((p, idx) => {
+      ensureFont();
+      particles.forEach((p) => {
         if (dragging && dragging === p) {
           // Being dragged — follow mouse
           p.x = mouse.x - dragOffX;
@@ -165,12 +205,12 @@ export default function FloatingBg() {
             p.y = H + 20;
             p.x = Math.random() * W;
             p.text = snippets[Math.floor(Math.random() * snippets.length)];
+            p.w = 0;
             p.pushX = 0;
             p.pushY = 0;
           }
         }
 
-        ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
         const glowing = !p.thrown && Math.sqrt((p.x - mouse.x) ** 2 + (p.y - mouse.y) ** 2) < 120;
         if (glowing || dragging === p) {
           ctx.shadowColor = `rgb(${accent})`;
@@ -178,12 +218,13 @@ export default function FloatingBg() {
         } else {
           ctx.shadowBlur = 0;
         }
+        const s = p.size / FONT_PX;
+        ctx.setTransform(s, 0, 0, s, p.x, p.y);
         ctx.fillStyle = `rgb(${accent} / ${p.alpha})`;
-        ctx.fillText(p.text, p.x, p.y);
+        ctx.fillText(p.text, 0, 0);
         ctx.shadowBlur = 0;
       });
-
-      animId = requestAnimationFrame(draw);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     draw();
@@ -250,9 +291,13 @@ export default function FloatingBg() {
       mouse.y = -9999;
     };
 
+    // Phones fire resize whenever the address bar slides in/out while scrolling; reallocating the canvas
+    // each time stutters, so ignore small height-only changes (CSS stretches the bitmap meanwhile).
     const onResize = () => {
+      if (window.innerWidth === W && Math.abs(window.innerHeight - H) < 160) return;
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
+      lastFont = ""; // resizing resets the context state
     };
 
     window.addEventListener("mousemove", onMouseMove);

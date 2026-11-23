@@ -3,7 +3,7 @@ import { strengths } from "../data/strengths";
 
 export default function Strengths() {
   return (
-    <section id="strengths" className="relative z-10 py-24 px-8">
+    <section id="strengths" className="cv-auto relative z-10 py-24 px-8">
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}

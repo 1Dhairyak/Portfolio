@@ -7,7 +7,6 @@
 // (Precomputed multi-keyframe clip-path animations hitch in Chrome, so the clip is set per frame.)
 
 const DURATION = 2400; // ms — total burn time
-const POINTS = 600; // vertices on the burn front
 const JAG_MAX = 70; // px, cap on edge raggedness
 const TAU = Math.PI * 2;
 
@@ -56,6 +55,8 @@ const ease = (p) => p * p * (3 - 2 * p); // slow ignition, catches, slows on the
 
 // Fire canvas + frame(p, dt, now) that advances the front, draws it, and returns the matching clip-path.
 function createFire(x, y, W, H) {
+  // vertices on the burn front: a phone's front is far shorter, so fewer points look the same and cost half
+  const POINTS = W < 768 ? 320 : 600;
   // ── the burn front: radius per vertex, only ever grows ──
   const spread = fbm([[3, 1, 1.2], [7, 0.6, 2.5]]); // which way the fire runs; surges and stalls
   const jag = fbm([[16, 1, 3], [40, 0.6, 5], [100, 0.35, 7], [220, 0.2, 9]]); // ragged, crawling edge
@@ -84,7 +85,8 @@ function createFire(x, y, W, H) {
 
   const canvas = document.createElement("canvas");
   canvas.className = "theme-fire";
-  const dpr = Math.min(devicePixelRatio || 1, 1.5);
+  // the glow is soft anyway; on phones 1x halves the blur/raster work against their 3x screens
+  const dpr = W < 768 ? 1 : Math.min(devicePixelRatio || 1, 1.5);
   canvas.width = Math.round(W * dpr);
   canvas.height = Math.round(H * dpr);
   const ctx = canvas.getContext("2d");
