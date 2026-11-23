@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="relative z-10 border-t border-white/5 py-8 px-8">
       <div className="max-w-6xl mx-auto flex flex-col md:grid md:grid-cols-3 items-center gap-4">
         <div>
-          <p className="text-white/50 text-sm font-sans">Created By Dhairya Kumar</p>
+          <p className="text-white/50 text-sm font-sans">Created By Dhairya</p>
           <p className="text-white/30 text-xs font-mono mt-0.5">© 2026. All Rights Reserved.</p>
         </div>
         <a

@@ -25,9 +25,9 @@ export default function Hero() {
               <span className="w-3 h-3 rounded-full bg-red-500" />
               <span className="w-3 h-3 rounded-full bg-yellow-400" />
               <span className="w-3 h-3 rounded-full bg-green-400" />
-              <span className="ml-2 text-xs text-white/40 font-mono">Profile.jpg — Dhairya Kumar</span>
+              <span className="ml-2 text-xs text-white/40 font-mono">Profile.jpg — Dhairya</span>
             </div>
-            <img src={profileImg} alt="Dhairya Kumar" className="w-full object-cover" style={{ maxHeight: "320px" }} loading="eager" decoding="sync" />
+            <img src={profileImg} alt="Dhairya" className="w-full object-cover" style={{ maxHeight: "320px" }} loading="eager" decoding="sync" />
             <div className="px-4 py-3 font-mono text-sm text-accent">
               <span className="text-white/40">$ </span>./Profile.jpg Loaded Successfully<span className="animate-pulse">|</span>
             </div>
